@@ -1,0 +1,10 @@
+{
+  "name": "cipher-lab-pwa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Thai installable PWA for five classic ciphers from the reference worksheets",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test"
+  }
+}

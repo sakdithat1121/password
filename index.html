@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f5f1" />
+    <meta name="description" content="เว็บแอปเข้ารหัสข้อความด้วย 5 วิธีตามตัวอย่างใน Excel พร้อมตารางแสดงการเข้ารหัสทีละตัวอักษร" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Cipher Lab" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Cipher Lab — ห้องทดลองเข้ารหัส</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Cipher Lab หน้าแรก">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="3" y="3" width="34" height="34" rx="11" fill="currentColor"/><path d="M13 13h5v5h-5zm9 0h5v5h-5zm-9 9h5v5h-5zm9 0h5v5h-5z" fill="#F3F4EF"/><path d="M18 15.5h4m-6.5 2.5v4m11-4v4m-8.5 2.5h4" stroke="#B8F35D" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </span>
+          <span class="brand-copy"><strong>CIPHER LAB</strong><small>ห้องทดลองรหัสลับ</small></span>
+        </a>
+        <div class="topbar-actions">
+          <span class="offline-pill"><span class="status-dot"></span> ทำงานในเครื่อง</span>
+          <button class="install-button" id="toggle3DButton" type="button" style="background:#3a6b45;">🌐 เปิด 3D Scene</button>
+          <button class="install-button" id="installButton" type="button">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5v9m0 0 3.25-3.25M10 11.5 6.75 8.25M3.5 12.75v2.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-2.5"/></svg>
+            <span id="installButtonText">ติดตั้งแอป</span>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="pageTitle">
+          <div class="intro-copy">
+            <p class="eyebrow"><span class="eyebrow-line"></span> CLASSICAL CIPHERS · 5 METHODS</p>
+            <h1 id="pageTitle">เปลี่ยนข้อความ<br /><span>เป็นรหัสลับ</span></h1>
+            <p class="intro-text">พิมพ์ชื่อหรือรหัส เลือกวิธีที่ต้องการ แล้วดูผลลัพธ์พร้อมขั้นตอนการเข้ารหัสได้ทันที</p>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="hero-code"><span>01</span><span>10</span><span>01</span><span class="hero-code-accent">✳</span></div>
+            <div class="hero-stamp">A—Z<br /><b>26</b></div>
+          </div>
+        </section>
+
+        <section class="workspace" aria-label="เครื่องมือเข้ารหัสข้อความ">
+          <div class="input-panel panel">
+            <div class="panel-heading">
+              <div><span class="step-label">01 / INPUT</span><h2>ข้อความต้นฉบับ</h2></div>
+              <button class="text-button" id="clearButton" type="button">ล้างข้อมูล</button>
+            </div>
+
+            <label class="field-label" for="plainText">ชื่อหรือรหัสที่ต้องการเข้ารหัส</label>
+            <textarea id="plainText" rows="4" maxlength="2000" spellcheck="false" placeholder="เช่น CYBER SECURITY 2026" aria-describedby="inputHint"></textarea>
+            <div class="field-meta"><span id="inputHint">รองรับอักษรอังกฤษ A–Z</span><button class="sample-button" id="sampleButton" type="button">โหลดตัวอย่าง Excel</button><span id="charCount">0 ตัวอักษร</span></div>
+
+            <div class="method-section">
+              <div class="section-title-row"><span class="field-label">เลือกวิธีการเข้ารหัส</span><span class="section-side-note">5 วิธีจากเอกสาร</span></div>
+              <div class="method-grid" id="methodGrid" role="group" aria-label="เลือกวิธีการเข้ารหัส">
+                <button class="method-card" data-method="caesar" type="button" aria-pressed="false"><span class="method-icon">C</span><span class="method-name">Caesar</span><span class="method-caption">เลื่อนตัวอักษร</span></button>
+                <button class="method-card is-selected" data-method="vigenere" type="button" aria-pressed="true"><span class="method-icon">V</span><span class="method-name">Vigenère</span><span class="method-caption">ใช้คำเป็นกุญแจ</span></button>
+                <button class="method-card" data-method="autokey" type="button" aria-pressed="false"><span class="method-icon">A</span><span class="method-name">Autokey</span><span class="method-caption">ต่อคีย์ด้วยข้อความ</span></button>
+                <button class="method-card" data-method="general" type="button" aria-pressed="false"><span class="method-icon">G</span><span class="method-name">General</span><span class="method-caption">แทนที่ตามคีย์เวิร์ด</span></button>
+                <button class="method-card" data-method="beaufort" type="button" aria-pressed="false"><span class="method-icon">B</span><span class="method-name">Beaufort</span><span class="method-caption">เข้ารหัสแบบผกผัน</span></button>
+              </div>
+            </div>
+
+            <div class="key-box" id="keyBox">
+              <div class="key-label-row"><label class="field-label" id="keyLabel" for="keyInput">คำกุญแจ</label><span class="key-chip" id="keyChip">CIPHER</span></div>
+              <input id="keyInput" type="text" value="CIPHER" maxlength="80" autocomplete="off" spellcheck="false" aria-describedby="keyHint" />
+              <p class="field-help" id="keyHint">ใช้เฉพาะตัวอักษร A–Z และวนซ้ำตามความยาวข้อความ</p>
+            </div>
+            <div class="shift-box is-hidden" id="shiftBox">
+              <div class="key-label-row"><label class="field-label" for="shiftInput">จำนวนตัวอักษรที่เลื่อน</label><span class="key-chip" id="shiftChip">D · +3</span></div>
+              <input id="shiftInput" type="range" min="0" max="25" value="3" />
+              <p class="field-help">ตัวอย่างใน Excel ใช้ D ซึ่งเท่ากับเลื่อน 3 ตำแหน่ง</p>
+            </div>
+
+            <div class="reference-note"><span class="note-icon" aria-hidden="true">i</span><p>เว้นวรรค ตัวเลข และสัญลักษณ์จะคงเดิม และไม่นับเป็นตำแหน่งคีย์ ตามหลักเดียวกับตารางตัวอย่าง</p></div>
+          </div>
+
+          <div class="result-panel panel">
+            <div class="panel-heading result-heading">
+              <div><span class="step-label">02 / RESULT</span><h2>ผลการเข้ารหัส</h2></div>
+              <span class="live-badge"><span></span> LIVE</span>
+            </div>
+            <div class="cipher-output" id="cipherOutput" aria-live="polite" aria-label="ข้อความที่เข้ารหัสแล้ว"><span class="output-placeholder">กำลังรอข้อความของคุณ<span class="cursor-dot"></span></span></div>
+            <div class="result-toolbar">
+              <span class="result-method" id="resultMethod">Vigenère · CIPHER</span>
+              <div class="result-actions">
+                <button class="icon-button" id="copyButton" type="button" disabled aria-label="คัดลอกผลลัพธ์" title="คัดลอกผลลัพธ์">
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="6" width="9" height="11" rx="1.7"/><path d="M12.5 6V4.8c0-.99-.81-1.8-1.8-1.8H5.8C4.81 3 4 3.81 4 4.8v7.4c0 .99.81 1.8 1.8 1.8H7"/></svg>
+                  <span>คัดลอก</span>
+                </button>
+                <button class="icon-button" id="downloadButton" type="button" disabled aria-label="ดาวน์โหลดตารางเป็น CSV" title="ดาวน์โหลดตารางเป็น CSV">
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m0 0 3.2-3.2M10 12 6.8 8.8M4 13.5v2.2c0 .72.58 1.3 1.3 1.3h9.4c.72 0 1.3-.58 1.3-1.3v-2.2"/></svg>
+                  <span>ดาวน์โหลด CSV</span>
+                </button>
+              </div>
+            </div>
+            <div class="result-footnote"><span class="footnote-symbol">↳</span><span>ประมวลผลในอุปกรณ์นี้ ข้อความไม่ถูกส่งไปที่อื่น</span></div>
+          </div>
+        </section>
+
+        <section class="table-panel panel" aria-labelledby="tableTitle">
+          <div class="table-heading">
+            <div><span class="step-label">03 / BREAKDOWN</span><h2 id="tableTitle">ตารางแสดงการเข้ารหัส</h2><p class="table-subtitle" id="tableDescription">ดูการแปลงของแต่ละตัวอักษรตามวิธีที่เลือก</p></div>
+            <div class="table-stat"><span class="stat-number" id="letterCount">00</span><span>ตัวอักษร<br />ที่เข้ารหัส</span></div>
+          </div>
+          <div class="table-scroll" role="region" aria-label="รายละเอียดตัวอักษรที่เข้ารหัส" tabindex="0">
+            <table>
+              <thead><tr><th scope="col">ลำดับ</th><th scope="col">ต้นฉบับ</th><th scope="col">ตำแหน่ง A–Z</th><th scope="col">คีย์ / ตัวแทน</th><th scope="col">ผลลัพธ์</th><th scope="col">วิธีคำนวณ</th></tr></thead>
+              <tbody id="tableBody"><tr class="empty-row"><td colspan="6"><span class="empty-mark">✳</span> พิมพ์ข้อความเพื่อดูรายละเอียดทีละตัวอักษร</td></tr></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span class="table-legend"><i class="legend-dot"></i> ตัวอักษร A–Z ถูกเข้ารหัส</span><span class="table-legend"><i class="legend-dot legend-neutral"></i> ตัวอื่นคงเดิม</span></div>
+        </section>
+
+        <section class="method-guide" aria-labelledby="guideTitle">
+          <div class="guide-intro"><span class="step-label">QUICK GUIDE</span><h2 id="guideTitle">เลือกวิธีให้เหมาะกับงาน</h2><p>ทั้ง 5 วิธีเป็นรหัสแบบคลาสสิกสำหรับเรียนรู้หลักการเข้ารหัส</p></div>
+          <div class="guide-list">
+            <article><span class="guide-index">01</span><div><h3>Caesar</h3><p>เลื่อนอักษรไปตามจำนวนตำแหน่ง เช่น A → D</p></div></article>
+            <article><span class="guide-index">02</span><div><h3>Vigenère</h3><p>ใช้คำกุญแจวนซ้ำกำหนดการเลื่อนในแต่ละตัว</p></div></article>
+            <article><span class="guide-index">03</span><div><h3>Autokey</h3><p>เริ่มด้วยคีย์ แล้วต่อด้วยข้อความต้นฉบับ</p></div></article>
+            <article><span class="guide-index">04</span><div><h3>General</h3><p>สร้างชุดอักษรแทนที่จากคีย์เวิร์ด</p></div></article>
+            <article><span class="guide-index">05</span><div><h3>Beaufort</h3><p>หาผลต่างของคีย์กับอักษรต้นฉบับ</p></div></article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer"><span>© CIPHER LAB</span><span>เครื่องมือเรียนรู้การเข้ารหัส · A–Z</span><a href="./README_TH.md">วิธีติดตั้งและใช้งาน</a></footer>
+    </div>
+
+    <dialog class="install-dialog" id="installDialog" aria-labelledby="installTitle">
+      <form method="dialog"><button class="dialog-close" aria-label="ปิดหน้าต่าง" value="close">×</button></form>
+      <span class="dialog-icon" aria-hidden="true">↥</span>
+      <p class="eyebrow">CIPHER LAB · APP</p>
+      <h2 id="installTitle">ติดตั้งแอปบนอุปกรณ์</h2>
+      <p class="dialog-copy">ติดตั้งแล้วเปิดใช้งานได้จากหน้าจอหลัก และกลับมาใช้ได้แม้ออฟไลน์</p>
+      <div class="install-steps" id="installSteps"></div>
+      <p class="dialog-secure-note">ต้องเปิดเว็บผ่าน localhost หรือ HTTPS เพื่อใช้การติดตั้งและออฟไลน์</p>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
