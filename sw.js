@@ -1,9 +1,10 @@
-const CACHE_NAME = "cipher-lab-v1";
+const CACHE_NAME = "cipher-lab-v2";
 const APP_FILES = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./learn.js",
   "./cipher-core.mjs",
   "./manifest.webmanifest",
   "./icon.svg",

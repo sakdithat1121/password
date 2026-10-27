@@ -99,3 +99,86 @@ export function encrypt(text, method, options = {}) {
     substitution,
   };
 }
+
+export const MODES = Object.freeze(["encrypt", "decrypt"]);
+
+/**
+ * Step-by-step version of the ciphers, used by the Learn page.
+ * Works in both directions and records the numbers behind every letter:
+ * input index, key letter/index, the raw sum or difference, and the result after mod 26.
+ * Non-letters are copied to the output and get no step (same rule as encrypt()).
+ */
+export function explain(text, method, options = {}, mode = "encrypt") {
+  if (typeof text !== "string") throw new TypeError("Text must be a string.");
+  if (!METHODS.includes(method)) throw new RangeError(`Unknown cipher method: ${method}`);
+  if (!MODES.includes(mode)) throw new RangeError(`Unknown mode: ${mode}`);
+
+  const key = normalizeKey(options.key);
+  const shift = mod26(Number(options.shift) || 0);
+  if (method !== "caesar" && !key) throw new TypeError(`${method} requires an A–Z key.`);
+
+  const substitution = method === "general" ? substitutionAlphabet(key) : "";
+  const plainLetters = [];
+  const steps = [];
+  let output = "";
+
+  for (const character of text) {
+    const upper = character.toUpperCase();
+    const inputIndex = upper.length === 1 ? ALPHABET.indexOf(upper) : -1;
+    if (inputIndex < 0) {
+      output += character;
+      continue;
+    }
+
+    const n = steps.length;
+    let keyLetter = null;
+    let keySource = null;
+    if (method === "caesar") {
+      keyLetter = ALPHABET[shift];
+      keySource = "shift";
+    } else if (method === "vigenere" || method === "beaufort") {
+      keyLetter = key[n % key.length];
+      keySource = "key";
+    } else if (method === "autokey") {
+      keyLetter = n < key.length ? key[n] : plainLetters[n - key.length];
+      keySource = n < key.length ? "key" : "text";
+    }
+    const keyIndex = keyLetter ? ALPHABET.indexOf(keyLetter) : null;
+
+    let raw = null;
+    let result;
+    if (method === "general") {
+      result = mode === "encrypt"
+        ? ALPHABET.indexOf(substitution[inputIndex])
+        : substitution.indexOf(upper);
+    } else if (method === "beaufort") {
+      raw = keyIndex - inputIndex;
+      result = mod26(raw);
+    } else {
+      raw = mode === "encrypt" ? inputIndex + keyIndex : inputIndex - keyIndex;
+      result = mod26(raw);
+    }
+
+    const outputLetter = ALPHABET[result];
+    plainLetters.push(mode === "encrypt" ? upper : outputLetter);
+    output += character === upper ? outputLetter : outputLetter.toLowerCase();
+    steps.push({
+      n: n + 1,
+      input: upper,
+      inputIndex,
+      keyLetter,
+      keyIndex,
+      keySource,
+      keySourceIndex: keySource === "text" ? n - key.length : null,
+      raw,
+      result,
+      output: outputLetter,
+    });
+  }
+
+  return { output, steps, method, mode, key, shift, substitution };
+}
+
+export function decrypt(text, method, options = {}) {
+  return explain(text, method, options, "decrypt").output;
+}

@@ -24,6 +24,16 @@
           </span>
           <span class="brand-copy"><strong>CIPHER LAB</strong><small>ห้องทดลองรหัสลับ</small></span>
         </a>
+        <nav class="view-nav" aria-label="เมนูหลัก">
+          <a class="view-link" href="#encrypt" data-view-link="encrypt">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="9" width="12" height="8.5" rx="2"/><path d="M6.75 9V6.5a3.25 3.25 0 0 1 6.5 0V9"/></svg>
+            <span>เข้ารหัส</span>
+          </a>
+          <a class="view-link" href="#learn" data-view-link="learn">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 5.5C8.4 4.2 6.1 3.7 3 3.9v11c3.1-.2 5.4.3 7 1.6 1.6-1.3 3.9-1.8 7-1.6v-11c-3.1-.2-5.4.3-7 1.6Zm0 0v11"/></svg>
+            <span>เรียนรู้</span>
+          </a>
+        </nav>
         <div class="topbar-actions">
           <span class="offline-pill"><span class="status-dot"></span> ทำงานในเครื่อง</span>
           <button class="install-button" id="installButton" type="button">
@@ -33,12 +43,13 @@
         </div>
       </header>
 
-      <main>
+      <main id="encryptView">
         <section class="intro" aria-labelledby="pageTitle">
           <div class="intro-copy">
             <p class="eyebrow"><span class="eyebrow-line"></span> CLASSICAL CIPHERS · 5 METHODS</p>
             <h1 id="pageTitle">เปลี่ยนข้อความ<br /><span>เป็นรหัสลับ</span></h1>
             <p class="intro-text">พิมพ์ชื่อหรือรหัส เลือกวิธีที่ต้องการ แล้วดูผลลัพธ์พร้อมขั้นตอนการเข้ารหัสได้ทันที</p>
+            <a class="learn-cta" href="#learn">ยังไม่เข้าใจวิธีคิด? ไปที่เมนูเรียนรู้ <span aria-hidden="true">→</span></a>
           </div>
           <div class="hero-art" aria-hidden="true">
             <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
@@ -123,13 +134,30 @@
         <section class="method-guide" aria-labelledby="guideTitle">
           <div class="guide-intro"><span class="step-label">QUICK GUIDE</span><h2 id="guideTitle">เลือกวิธีให้เหมาะกับงาน</h2><p>ทั้ง 5 วิธีเป็นรหัสแบบคลาสสิกสำหรับเรียนรู้หลักการเข้ารหัส</p></div>
           <div class="guide-list">
-            <article><span class="guide-index">01</span><div><h3>Caesar</h3><p>เลื่อนอักษรไปตามจำนวนตำแหน่ง เช่น A → D</p></div></article>
-            <article><span class="guide-index">02</span><div><h3>Vigenère</h3><p>ใช้คำกุญแจวนซ้ำกำหนดการเลื่อนในแต่ละตัว</p></div></article>
-            <article><span class="guide-index">03</span><div><h3>Autokey</h3><p>เริ่มด้วยคีย์ แล้วต่อด้วยข้อความต้นฉบับ</p></div></article>
-            <article><span class="guide-index">04</span><div><h3>General</h3><p>สร้างชุดอักษรแทนที่จากคีย์เวิร์ด</p></div></article>
-            <article><span class="guide-index">05</span><div><h3>Beaufort</h3><p>หาผลต่างของคีย์กับอักษรต้นฉบับ</p></div></article>
+            <article><span class="guide-index">01</span><div><h3>Caesar</h3><p>เลื่อนอักษรไปตามจำนวนตำแหน่ง เช่น A → D</p><a class="guide-link" href="#learn/caesar">เรียนรู้วิธีคิด →</a></div></article>
+            <article><span class="guide-index">02</span><div><h3>Vigenère</h3><p>ใช้คำกุญแจวนซ้ำกำหนดการเลื่อนในแต่ละตัว</p><a class="guide-link" href="#learn/vigenere">เรียนรู้วิธีคิด →</a></div></article>
+            <article><span class="guide-index">03</span><div><h3>Autokey</h3><p>เริ่มด้วยคีย์ แล้วต่อด้วยข้อความต้นฉบับ</p><a class="guide-link" href="#learn/autokey">เรียนรู้วิธีคิด →</a></div></article>
+            <article><span class="guide-index">04</span><div><h3>General</h3><p>สร้างชุดอักษรแทนที่จากคีย์เวิร์ด</p><a class="guide-link" href="#learn/general">เรียนรู้วิธีคิด →</a></div></article>
+            <article><span class="guide-index">05</span><div><h3>Beaufort</h3><p>หาผลต่างของคีย์กับอักษรต้นฉบับ</p><a class="guide-link" href="#learn/beaufort">เรียนรู้วิธีคิด →</a></div></article>
           </div>
         </section>
+      </main>
+
+      <main id="learnView" class="learn-view" hidden>
+        <section class="intro learn-intro" aria-labelledby="learnTitle">
+          <div class="intro-copy">
+            <p class="eyebrow"><span class="eyebrow-line"></span> LEARN · HOW CIPHERS WORK</p>
+            <h1 id="learnTitle">เรียนรู้<br /><span>วิธีคิดรหัสลับ</span></h1>
+            <p class="intro-text">เลือกวิธีการเข้ารหัสที่อยากเรียน ดูแนวคิด สูตร ตาราง และลองคิดทีละตัวอักษร พร้อมแบบทดสอบท้ายบท</p>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="hero-code learn-code"><span>A</span><span>+3</span><span>=</span><span class="hero-code-accent">D</span></div>
+            <div class="hero-stamp">mod<br /><b>26</b></div>
+          </div>
+        </section>
+        <nav class="learn-tabs" id="learnTabs" aria-label="เลือกหัวข้อที่ต้องการเรียน"></nav>
+        <div class="learn-content" id="learnContent"></div>
       </main>
 
       <footer class="footer"><span>© CIPHER LAB</span><span>เครื่องมือเรียนรู้การเข้ารหัส · A–Z</span><a href="./README_TH.md">วิธีติดตั้งและใช้งาน</a></footer>

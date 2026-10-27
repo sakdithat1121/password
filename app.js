@@ -1,4 +1,5 @@
 import { ALPHABET, encrypt, normalizeKey } from "./cipher-core.mjs";
+import { initLearn, leaveLearn, showLearn } from "./learn.js";
 
 const METHODS = {
   caesar: { name: "Caesar", defaultKey: "D", label: "จำนวนตัวอักษรที่เลื่อน" },
@@ -33,6 +34,9 @@ const els = {
   installDialog: document.querySelector("#installDialog"),
   installSteps: document.querySelector("#installSteps"),
   toast: document.querySelector("#toast"),
+  encryptView: document.querySelector("#encryptView"),
+  learnView: document.querySelector("#learnView"),
+  viewLinks: document.querySelectorAll("[data-view-link]"),
 };
 
 let selectedMethod = "vigenere";
@@ -270,6 +274,39 @@ window.addEventListener("appinstalled", () => {
 if (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true) {
   els.installButtonText.textContent = "ติดตั้งแล้ว";
 }
+
+// Views: #encrypt (default), #learn, #learn/<topic>
+let currentView = null;
+function route() {
+  const [view, topic] = location.hash.replace(/^#/, "").split("/");
+  const next = view === "learn" ? "learn" : "encrypt";
+  const changed = next !== currentView;
+  currentView = next;
+  els.encryptView.hidden = next !== "encrypt";
+  els.learnView.hidden = next !== "learn";
+  els.viewLinks.forEach((link) => {
+    if (link.dataset.viewLink === next) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
+  });
+  document.title = next === "learn" ? "เรียนรู้วิธีคิด — Cipher Lab" : "Cipher Lab — ห้องทดลองเข้ารหัส";
+  if (next === "learn") showLearn(topic, { scrollToTabs: !changed });
+  else leaveLearn();
+  if (changed) window.scrollTo(0, 0);
+}
+
+initLearn({
+  onOpenEncryptor({ method, text, key, shift }) {
+    location.hash = "encrypt";
+    setMethod(method);
+    if (method === "caesar") els.shiftInput.value = String(shift);
+    else els.keyInput.value = key;
+    els.plainText.value = text;
+    render();
+    notify(`เปิดตัวอย่าง ${METHODS[method].name} ในหน้าเข้ารหัสแล้ว`);
+  },
+});
+window.addEventListener("hashchange", route);
+route();
 
 if ("serviceWorker" in navigator && (location.protocol === "https:" || ["localhost", "127.0.0.1"].includes(location.hostname))) {
   window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
