@@ -1,0 +1,5 @@
+# Local-only files: keep them out of the Vercel deploy so it stays a static site
+server.mjs
+launch.ps1
+package.json
+tests
